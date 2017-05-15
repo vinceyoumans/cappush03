@@ -1,0 +1,108 @@
+import { Component } from '@angular/core';
+import { NavController, AlertController } from 'ionic-angular';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
+
+
+@Component({
+  selector: 'page-about',
+  templateUrl: 'about.html'
+})
+export class AboutPage {
+
+  acc: FirebaseListObservable<any>;  
+  acc2: FirebaseListObservable<any>;
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public af:AngularFire) {
+
+        this.acc = af.database.list('/accounts');
+        this.acc2 = af.database.list('/');
+  }
+
+setAccount(account){
+        // let alert = this.alertCtrl.create({
+        //   title:"TEXTBOX SAYS",
+        //   subTitle:account,
+        //   buttons:["ok"]
+        // });
+        
+        // alert.present();
+
+            console.log('VY***********************************************');
+            console.log('Account: ' + account  );
+                    // alert('account: ' + account );
+                    window.localStorage.setItem("account", account);
+                    // alert('++account: ' + window.localStorage.getItem("account") );
+            console.log('VY***********************************************');  
+
+
+        let alert = this.alertCtrl.create({
+          title:"DEVICE TOKEN",
+          subTitle: window.localStorage.getItem("deviceToken"),
+          buttons:["ok"]
+        });
+        
+        alert.present();
+
+
+       alert = this.alertCtrl.create({
+           title:"Account",
+           subTitle: window.localStorage.getItem("account"),
+           buttons:["ok"]
+         });
+        
+         alert.present();
+
+
+        //this.acc = af.database.list('/accounts');
+
+         //Now set in FB
+               this.acc.push({
+                 yayaya:'yayay',
+                 account: window.localStorage.getItem("account"),
+                 token: window.localStorage.getItem("deviceToken")
+               });
+          
+          let acc22 = window.localStorage.getItem("account");
+          
+          this.acc2.push
+              //   this.acc.push("acc2/"+acc22"  {
+              //    account: window.localStorage.getItem("account"),
+              //    token: window.localStorage.getItem("deviceToken")
+              //  });
+
+
+
+
+
+
+
+                // const cachedAcc = this.af.database.object(`/account2/`+ window.localStorage.getItem("account")+`/`+  );
+                // cachedAcc.set(items);
+
+
+                // addCustomKey(window.localStorage.getItem("account"),"token", window.localStorage.getItem("deviceToken"))
+                
+// addCustomKey(key, value) {
+//     const users = this.af.database.object('/users');
+//     users.update({ [key]: value });
+
+AddAccountToken(window.localStorage.getItem("account"), window.localStorage.getItem("deviceToken"))
+
+};
+
+
+    // function  addCustomKey(key, value) {
+    //   const acc = this.af.database.object('/acc2');
+    //   acc.update({ [key]: value });
+    //}
+
+
+
+
+};
+
+
+    function  AddAccountToken(account, token) {
+      this.acc2 = this.af.database.object('/acc2/${account}');
+      // acc.update({ [key]: value });
+      this.acc2.update({'token': token })
+    };
